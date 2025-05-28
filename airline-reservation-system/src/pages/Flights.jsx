@@ -1,6 +1,7 @@
 // frontend/src/pages/Flights.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../api/api';
+import FlightGrid from '../components/FlightGrid';
 import FlightCard from '../components/FlightCard';
 
 const Flights = () => {
@@ -17,9 +18,11 @@ const Flights = () => {
   return (
     <div>
       <h2>Available Flights</h2>
-      {flights.map((flight) => (
-        <FlightCard key={flight.id} flight={flight} />
-      ))}
+      <FlightGrid>
+        {flights.map(flight => (
+          <FlightCard key={flight.id} flight={flight} />
+        ))}
+      </FlightGrid>
     </div>
   );
 };
