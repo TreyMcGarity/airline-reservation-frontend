@@ -5,6 +5,9 @@ import styled from 'styled-components';
 import Home from './pages/Home';
 import Flights from './pages/Flights';
 import AddFlight from './pages/AddFlight';
+import Login from './components/auth_components/Login';
+import Register from './components/auth_components/Register';
+
 
 const Nav = styled.nav`
   background-color: #121212;
@@ -51,11 +54,15 @@ const App = () => (
       <StyledLink to="/">Home</StyledLink>
       <StyledLink to="/flights">View Flights</StyledLink>
       <StyledLink to="/add-flight">Add Flight</StyledLink>
+      <StyledLink to="/login">Login</StyledLink>
+      <StyledLink to="/register">Register</StyledLink>
     </Nav>
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/flights" element={<Flights />} />
       <Route path="/add-flight" element={<AddFlight />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   </Router>
 );
