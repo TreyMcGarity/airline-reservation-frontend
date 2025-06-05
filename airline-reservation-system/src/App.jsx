@@ -1,4 +1,3 @@
-// frontend/src/App.jsx
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -7,7 +6,7 @@ import Flights from './pages/Flights';
 import AddFlight from './pages/AddFlight';
 import Login from './components/auth_components/Login';
 import Register from './components/auth_components/Register';
-
+import CustomerDashboard from './components/CustomerDashboard'; // ← Add this import
 
 const Nav = styled.nav`
   background-color: #121212;
@@ -46,8 +45,6 @@ const StyledLink = styled(Link)`
   }
 `;
 
-
-
 const App = () => (
   <Router>
     <Nav>
@@ -56,6 +53,7 @@ const App = () => (
       <StyledLink to="/add-flight">Add Flight</StyledLink>
       <StyledLink to="/login">Login</StyledLink>
       <StyledLink to="/register">Register</StyledLink>
+      <StyledLink to="/dashboard">Dashboard</StyledLink> {/* ← Temporary link */}
     </Nav>
     <Routes>
       <Route path="/" element={<Home />} />
@@ -63,9 +61,9 @@ const App = () => (
       <Route path="/add-flight" element={<AddFlight />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<CustomerDashboard />} /> {/* ← New route */}
     </Routes>
   </Router>
 );
-
 
 export default App;

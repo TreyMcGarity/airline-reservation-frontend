@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import api from '../../api/api'; 
 
 const LoginContainer = styled.div`
   background-color: #1e1e1e;
@@ -36,7 +38,7 @@ const Input = styled.input`
   background-color: #1e1e1e;
   color: #e0e0e0;
   box-shadow: inset 0 0 4px rgba(0, 173, 181, 0.5);
-  
+
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px #00adb5;
@@ -61,13 +63,41 @@ const SubmitButton = styled.button`
 `;
 
 const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await api.post('/auth/login', { email, password });
+      localStorage.setItem('token', res.data.token);
+      navigate('/dashboard');
+    } catch (err) {
+      console.error('Login failed:', err.response?.data || err.message);
+      alert('Login failed: ' + (err.response?.data?.error || 'Unexpected error'));
+    }
+  };
+
   return (
     <LoginContainer>
       <LoginBox>
         <LoginHeading>Login</LoginHeading>
-        <form>
-          <Input type="email" placeholder="Email" required />
-          <Input type="password" placeholder="Password" required />
+        <form onSubmit={handleLogin}>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
           <SubmitButton type="submit">Sign In</SubmitButton>
         </form>
       </LoginBox>
