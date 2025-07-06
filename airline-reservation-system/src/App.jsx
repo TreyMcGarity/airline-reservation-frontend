@@ -1,12 +1,13 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import SplashPage from './pages/SplashPage';
 import Home from './pages/Home';
 import Flights from './pages/Flights';
 import AddFlight from './pages/AddFlight';
 import Login from './components/auth_components/Login';
 import Register from './components/auth_components/Register';
-import CustomerDashboard from './components/CustomerDashboard'; // ← Add this import
+import CustomerDashboard from './components/CustomerDashboard';
 
 const Nav = styled.nav`
   background-color: #121212;
@@ -48,7 +49,7 @@ const StyledLink = styled(Link)`
 const App = () => (
   <Router>
     <Nav>
-      <StyledLink to="/">Home</StyledLink>
+      <StyledLink to="/home">Home</StyledLink>
       <StyledLink to="/flights">View Flights</StyledLink>
       <StyledLink to="/add-flight">Add Flight</StyledLink>
       <StyledLink to="/login">Login</StyledLink>
@@ -56,7 +57,8 @@ const App = () => (
       <StyledLink to="/dashboard">Dashboard</StyledLink> {/* ← Temporary link */}
     </Nav>
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<SplashPage />} />
+      <Route path="/home" element={<Home />} />
       <Route path="/flights" element={<Flights />} />
       <Route path="/add-flight" element={<AddFlight />} />
       <Route path="/login" element={<Login />} />
