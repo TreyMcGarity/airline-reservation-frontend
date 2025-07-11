@@ -25,7 +25,7 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 - Redux (coming soon) – For global state management
 
 ### Backend:
-- Planned integration with a Node.js + Express API and PostgreSQL database
+- Integration with a Node.js + Express API and PostgreSQL database
 
 ---
 
