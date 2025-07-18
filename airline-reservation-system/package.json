@@ -1,8 +1,8 @@
 {
+  "homepage": "https://TreyMcGarity.github.io/airline-reservation-system",
   "name": "airline-reservation-system",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://TreyMcGarity.github.io/airline-reservation-system",
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "@testing-library/dom": "^10.4.0",
