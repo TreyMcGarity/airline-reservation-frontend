@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import BookingCard from './BookingCard';
 import api from '../api/api';
 
 const DashboardContainer = styled.div`
@@ -30,6 +31,7 @@ const Stat = styled.p`
 
 const CustomerDashboard = () => {
   const [customer, setCustomer] = useState(null);
+  const [bookings, setBookings] = useState([]);
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -43,7 +45,7 @@ const CustomerDashboard = () => {
       try {
         const res = await api.get('/customers/me', {
           headers: {
-            "Authorization": `${token}` // ✅ Add 'Bearer' if your backend expects it
+            "Authorization": `${token}`
           }
         });
         setCustomer(res.data);
@@ -54,7 +56,21 @@ const CustomerDashboard = () => {
       }
     };
 
+    const fetchBookings = async () => {
+      try {
+        const res = await api.get('/bookings', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        });
+        setBookings(res.data);
+      } catch (err) {
+        console.error("Failed to fetch bookings", err);
+      }
+    };
+
     fetchCustomer();
+    fetchBookings();
   }, [token]);
 
   if (!customer) {
@@ -63,7 +79,7 @@ const CustomerDashboard = () => {
 
   return (
     <DashboardContainer>
-      <Heading>Welcome, {customer.first_name} ✈️</Heading>
+      <Heading>Welcome, {customer.first_name} </Heading>
 
       <Section>
         <h2>Your Stats</h2>
@@ -80,6 +96,18 @@ const CustomerDashboard = () => {
           <li>⚙️ Manage Profile</li>
         </ul>
       </Section>
+
+      <Section>
+        <h2>Your Bookings</h2>
+        {bookings.length === 0 ? (
+          <p>No bookings yet.</p>
+        ) : (
+          bookings.map(booking => (
+            <BookingCard key={booking.id} booking={booking} />
+          ))
+        )}
+      </Section>
+
     </DashboardContainer>
   );
 };
