@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import api from '../api/api';
 
 const DashboardContainer = styled.div`
   background-color: #1e1e1e;
@@ -28,12 +29,41 @@ const Stat = styled.p`
 `;
 
 const CustomerDashboard = () => {
-  // You can pull user info from Redux later if needed
-  const userName = 'Traveler'; // Placeholder
+  const [customer, setCustomer] = useState(null);
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (!token) {
+      alert("⚠️ Please log in first.");
+      window.location.href = "login.html";
+      return;
+    }
+
+    const fetchCustomer = async () => {
+      try {
+        const res = await api.get('/customers/me', {
+          headers: {
+            "Authorization": `${token}` // ✅ Add 'Bearer' if your backend expects it
+          }
+        });
+        setCustomer(res.data);
+      } catch (err) {
+        console.error("Failed to fetch customer data", err);
+        alert("Session expired or unauthorized. Please log in again.");
+        window.location.href = "login.html";
+      }
+    };
+
+    fetchCustomer();
+  }, [token]);
+
+  if (!customer) {
+    return <DashboardContainer>Loading...</DashboardContainer>;
+  }
 
   return (
     <DashboardContainer>
-      <Heading>Welcome, {userName} ✈️</Heading>
+      <Heading>Welcome, {customer.first_name} ✈️</Heading>
 
       <Section>
         <h2>Your Stats</h2>

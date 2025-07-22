@@ -51,7 +51,7 @@ const App = () => (
     <Nav>
       <StyledLink to="/home">Home</StyledLink>
       <StyledLink to="/flights">View Flights</StyledLink>
-      <StyledLink to="/add-flight">Add Flight</StyledLink>
+      <StyledLink to="/add-flight">Add Flight</StyledLink> {/* ← Temporary link */}
       <StyledLink to="/login">Login</StyledLink>
       <StyledLink to="/register">Register</StyledLink>
       <StyledLink to="/dashboard">Dashboard</StyledLink> {/* ← Temporary link */}
@@ -63,7 +63,7 @@ const App = () => (
       <Route path="/add-flight" element={<AddFlight />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<CustomerDashboard />} /> {/* ← New route */}
+      <Route path="/dashboard" element={<CustomerDashboard />} />
     </Routes>
   </Router>
 );
