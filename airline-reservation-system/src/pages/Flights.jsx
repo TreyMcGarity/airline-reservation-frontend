@@ -1,8 +1,8 @@
 // frontend/src/pages/Flights.jsx
 import React, { useEffect, useState } from 'react';
 import api from '../api/api';
-import FlightGrid from '../components/FlightGrid';
-import FlightCard from '../components/FlightCard';
+import FlightGrid from '../components/flights/FlightGrid';
+import FlightCard from '../components/flights/FlightCard';
 
 const Flights = () => {
   const [flights, setFlights] = useState([]);

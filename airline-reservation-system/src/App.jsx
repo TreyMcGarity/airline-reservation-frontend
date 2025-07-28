@@ -5,8 +5,8 @@ import SplashPage from './pages/SplashPage';
 import Home from './pages/Home';
 import Flights from './pages/Flights';
 import AddFlight from './pages/AddFlight';
-import Login from './components/auth_components/Login';
-import Register from './components/auth_components/Register';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
 import CustomerDashboard from './components/CustomerDashboard';
 
 const Nav = styled.nav`

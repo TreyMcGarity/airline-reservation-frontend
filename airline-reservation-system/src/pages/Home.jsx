@@ -21,14 +21,6 @@ const SubHeading = styled.h2`
   margin-bottom: 2rem;
 `;
 
-const HeroImage = styled.img`
-  max-width: 100%;
-  height: auto;
-  border-radius: 12px;
-  margin: 2rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
-`;
-
 const StyledLink = styled(Link)`
   display: inline-block;
   margin-top: 1.5rem;
@@ -75,11 +67,6 @@ const Home = () => (
   <HomeContainer>
     <Heading>Welcome to the Airline Reservation System</Heading>
     <SubHeading>Book, manage, and track flights with ease</SubHeading>
-    
-    {/* <HeroImage
-      src="https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?auto=format&fit=crop&w=1650&q=80"
-      alt="Airplane flying through the clouds"
-    /> */}
 
     <StyledLink to="/flights">View Available Flights</StyledLink>
 
