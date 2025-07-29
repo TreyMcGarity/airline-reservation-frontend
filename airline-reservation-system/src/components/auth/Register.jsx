@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const RegisterContainer = styled.div`
@@ -71,6 +72,31 @@ const SubmitButton = styled.button`
   }
 `;
 
+const AuthLinks = styled.div`
+  margin-top: 1.5rem;
+  text-align: center;
+`;
+
+const AuthText = styled.p`
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #cccccc;
+`;
+
+const StyledLink = styled(Link)`
+  color: #00adb5;
+  text-decoration: none;
+  margin-left: 0.25rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #00cbd1;
+    text-decoration: underline;
+  }
+`;
+
+
 const Registration = () => {
   return (
     <RegisterContainer>
@@ -86,6 +112,12 @@ const Registration = () => {
           <FullWidthInput type="password" placeholder="Password" required />
           <SubmitButton type="submit">Register</SubmitButton>
         </form>
+        <AuthLinks>
+          <AuthText>
+            Already have an account?
+            <StyledLink to="/login">Login</StyledLink>
+          </AuthText>
+        </AuthLinks>
       </RegisterBox>
     </RegisterContainer>
   );

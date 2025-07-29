@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import api from '../../api/api'; 
 
 const LoginContainer = styled.div`
@@ -62,6 +62,30 @@ const SubmitButton = styled.button`
   }
 `;
 
+const AuthLinks = styled.div`
+  margin-top: 1.5rem;
+  text-align: center;
+`;
+
+const AuthText = styled.p`
+  margin: 0.5rem 0;
+  font-size: 0.95rem;
+  color: #cccccc;
+`;
+
+const StyledLink = styled(Link)`
+  color: #00adb5;
+  text-decoration: none;
+  margin-left: 0.25rem;
+  font-weight: 500;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: #00cbd1;
+    text-decoration: underline;
+  }
+`;
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -100,6 +124,15 @@ const Login = () => {
           />
           <SubmitButton type="submit">Sign In</SubmitButton>
         </form>
+        <AuthLinks>
+          <AuthText>
+            Don’t have an account?{' '}
+            <StyledLink to="/register">Sign up</StyledLink>
+          </AuthText>
+          <AuthText>
+            <StyledLink to="/email-request">Forgot Password?</StyledLink>
+          </AuthText>
+        </AuthLinks>
       </LoginBox>
     </LoginContainer>
   );

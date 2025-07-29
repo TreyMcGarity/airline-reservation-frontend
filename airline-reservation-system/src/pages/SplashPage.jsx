@@ -51,7 +51,7 @@ const SplashPage = () => {
       <Title>Airline Reservation System</Title>
       <Subtitle>Book, manage, and track flights with ease</Subtitle>
       <NavLinks>
-        <StyledLink to="/">Home</StyledLink>
+        <StyledLink to="/home">Home</StyledLink>
         <StyledLink to="/login">Login</StyledLink>
         <StyledLink to="/register">Register</StyledLink>
       </NavLinks>
