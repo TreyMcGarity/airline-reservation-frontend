@@ -58,9 +58,9 @@ const CustomerDashboard = () => {
 
     const fetchBookings = async () => {
       try {
-        const res = await api.get('/bookings', {
+        const res = await api.get('/bookings/customerReservations', {
           headers: {
-            Authorization: `Bearer ${token}`
+            "Authorization": `${token}`
           }
         });
         setBookings(res.data);
