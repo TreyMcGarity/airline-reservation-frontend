@@ -8,14 +8,43 @@ import AddFlight from './pages/AddFlight';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CustomerDashboard from './components/CustomerDashboard';
+import Logo from './utils/airline-res-logo.png';
+
+//  background-color: #121212;
 
 const Nav = styled.nav`
-  background-color: #121212;
-  padding: 1rem 2rem;
+  background-color: #0a0a0aff;
+  height: 100px;  // increase height
+  padding: 0 2rem;
   display: flex;
-  justify-content: center;
-  gap: 2rem;
+  align-items: center;
+  justify-content: space-between;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+`;
+
+const LogoContainer = styled.div`
+  display: flex;
+  align-items: center;
+  height: 100%;
+`;
+
+const LogoImage = styled.img`
+  height: 80px;       // make this match Nav height minus some padding
+  width: auto;
+  margin-right: 1rem;
+`;
+
+const AppName = styled.span`
+  font-size: 1.25rem;
+  color: #00adb5;
+  font-weight: bold;
+`;
+
+const NavLinks = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  height: 100%;
 `;
 
 const StyledLink = styled(Link)`
@@ -46,26 +75,43 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const App = () => (
-  <Router>
-    <Nav>
-      <StyledLink to="/home">Home</StyledLink>
-      <StyledLink to="/flights">View Flights</StyledLink>
-      <StyledLink to="/add-flight">Add Flight</StyledLink> {/* ← Temporary link */}
-      <StyledLink to="/login">Login</StyledLink>
-      <StyledLink to="/register">Register</StyledLink>
-      <StyledLink to="/dashboard">Dashboard</StyledLink> {/* ← Temporary link */}
-    </Nav>
-    <Routes>
-      <Route path="/" element={<SplashPage />} />
-      <Route path="/home" element={<Home />} />
-      <Route path="/flights" element={<Flights />} />
-      <Route path="/add-flight" element={<AddFlight />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/dashboard" element={<CustomerDashboard />} />
-    </Routes>
-  </Router>
-);
+const App = () => {
+  const token = localStorage.getItem('token');
+  const isLoggedIn = !!token;
+
+  return (
+    <Router>
+      <Nav>
+        <LogoContainer>
+          <LogoImage src={Logo} alt="Logo" />
+          {/* <AppName>Airline Reservation</AppName> */}
+        </LogoContainer>
+
+        <NavLinks>
+          <StyledLink to="/support">Support</StyledLink>
+          <StyledLink to="/home">Home</StyledLink>
+          <StyledLink to="/flights">Find Flights</StyledLink>
+          {isLoggedIn ? (
+            <StyledLink to="/dashboard">Dashboard</StyledLink>
+          ) : (
+            <StyledLink to="/login">Login</StyledLink>
+          )}
+        </NavLinks>
+      </Nav>
+
+      <Routes>
+        <Route path="/" element={<SplashPage />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/flights" element={<Flights />} />
+        <Route path="/add-flight" element={<AddFlight />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<CustomerDashboard />} />
+        <Route path="/support" element={<div>Support Page Coming Soon</div>} />
+      </Routes>
+    </Router>
+  );
+};
+
 
 export default App;
