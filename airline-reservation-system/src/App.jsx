@@ -3,14 +3,12 @@ import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SplashPage from './pages/SplashPage';
 import Home from './pages/Home';
-import Flights from './pages/Flights';
+import Flights from './components/flights/Flights';
 import AddFlight from './pages/AddFlight';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CustomerDashboard from './components/CustomerDashboard';
 import Logo from './utils/airline-res-logo.png';
-
-//  background-color: #121212;
 
 const Nav = styled.nav`
   background-color: #0a0a0aff;
@@ -32,12 +30,6 @@ const LogoImage = styled.img`
   height: 80px;       // make this match Nav height minus some padding
   width: auto;
   margin-right: 1rem;
-`;
-
-const AppName = styled.span`
-  font-size: 1.25rem;
-  color: #00adb5;
-  font-weight: bold;
 `;
 
 const NavLinks = styled.div`
@@ -84,7 +76,6 @@ const App = () => {
       <Nav>
         <LogoContainer>
           <LogoImage src={Logo} alt="Logo" />
-          {/* <AppName>Airline Reservation</AppName> */}
         </LogoContainer>
 
         <NavLinks>

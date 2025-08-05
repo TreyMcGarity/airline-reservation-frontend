@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import api from '../api/api';
-import FlightGrid from '../components/flights/FlightGrid';
-import FlightCard from '../components/flights/FlightCard';
-import FlightSearchForm from '../components/flights/FlightSearchForm';
+import api from '../../api/api';
+import FlightGrid from './FlightGrid';
+import FlightCard from './FlightCard';
+import FlightSearchForm from './FlightSearchForm';
 import styled from 'styled-components';
 
 const PageWrapper = styled.div`
