@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import SplashPage from './pages/SplashPage';
 import Home from './pages/Home';
 import Flights from './components/flights/Flights';
-import AddFlight from './pages/AddFlight';
+import AddFlight from './components/flights/AddFlight';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CustomerDashboard from './components/CustomerDashboard';
