@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useLocation } from 'react-router-dom'; // ← added useLocation
 import api from '../../api/api'; 
 
 const LoginContainer = styled.div`
@@ -86,20 +86,39 @@ const StyledLink = styled(Link)`
   }
 `;
 
+const AUTH_TOKEN_KEY = 'authToken'; // ← match Flights.jsx
+
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation(); // ← read where we came from
 
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      setSubmitting(true);
       const res = await api.post('/auth/login', { email, password });
-      localStorage.setItem('token', res.data.token);
-      navigate('/dashboard');
+      const token = res.data?.token;
+      if (!token) throw new Error('Missing token from server');
+
+      // store token using the same key Flights.jsx checks
+      localStorage.setItem(AUTH_TOKEN_KEY, token);
+      // (optional) keep your old key too if other parts depend on it:
+      // localStorage.setItem('token', token);
+
+      // attach token to API for subsequent requests
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+
+      // go back to where the user started (defaults to /flights)
+      const from = location.state?.from || '/flights';
+      navigate(from, { replace: true });
     } catch (err) {
       console.error('Login failed:', err.response?.data || err.message);
       alert('Login failed: ' + (err.response?.data?.error || 'Unexpected error'));
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -122,11 +141,13 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <SubmitButton type="submit">Sign In</SubmitButton>
+          <SubmitButton type="submit" disabled={submitting}>
+            {submitting ? 'Signing In…' : 'Sign In'}
+          </SubmitButton>
         </form>
         <AuthLinks>
           <AuthText>
-            Don’t have an account?{' '}
+            Don’t have an account?
             <StyledLink to="/register">Sign up</StyledLink>
           </AuthText>
           <AuthText>
@@ -139,3 +160,4 @@ const Login = () => {
 };
 
 export default Login;
+
