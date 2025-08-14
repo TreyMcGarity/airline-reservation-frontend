@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import SplashPage from './pages/SplashPage';
@@ -8,7 +8,10 @@ import AddFlight from './components/flights/AddFlight';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
 import CustomerDashboard from './components/CustomerDashboard';
+import api from './api/api';
 import Logo from './utils/airline-res-logo.png';
+
+const AUTH_TOKEN_KEY = 'authToken';
 
 const Nav = styled.nav`
   background-color: #0a0a0aff;
@@ -68,8 +71,19 @@ const StyledLink = styled(Link)`
 `;
 
 const App = () => {
-  const token = localStorage.getItem('token');
+  // Read token consistently; fall back to legacy key if present
+  const token = useMemo(
+    () => localStorage.getItem(AUTH_TOKEN_KEY) || localStorage.getItem('token'),
+    []
+  );
   const isLoggedIn = !!token;
+
+  // Attach token to axios on app load
+  useEffect(() => {
+    if (token) {
+      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+    }
+  }, [token]);
 
   return (
     <Router>
@@ -103,6 +117,5 @@ const App = () => {
     </Router>
   );
 };
-
 
 export default App;

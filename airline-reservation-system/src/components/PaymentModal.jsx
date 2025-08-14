@@ -1,76 +1,39 @@
-// frontend/src/components/PaymentModal.jsx
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import { stripePromise } from '../stripe/stripe';
 
-const Form = styled.div`
-  display: grid;
-  gap: 0.9rem;
-`;
-
+const Form = styled.div` display: grid; gap: 0.9rem; `;
 const Row = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
   @media (max-width: 520px) { grid-template-columns: 1fr; }
 `;
-
 const Field = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
   label { font-size: 0.9rem; color: #cfcfcf; }
   input {
-    background: #202020;
-    color: #e9e9e9;
-    border: 1px solid #3d3d3d;
-    border-radius: 8px;
-    padding: 0.65rem 0.75rem;
-    font-size: 0.95rem;
+    background: #202020; color: #e9e9e9; border: 1px solid #3d3d3d;
+    border-radius: 8px; padding: 0.65rem 0.75rem; font-size: 0.95rem;
   }
 `;
-
 const CardBox = styled.div`
-  background: #202020;
-  border: 1px solid #3d3d3d;
-  border-radius: 8px;
-  padding: 0.75rem;
+  background: #202020; border: 1px solid #3d3d3d; border-radius: 8px; padding: 0.75rem;
   .StripeElement { font-size: 16px; }
 `;
+const Actions = styled.div` display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 0.5rem; `;
 
-const Actions = styled.div`
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-  margin-top: 0.5rem;
-`;
-
+// NOTE: transient prop
 const Button = styled.button`
-  appearance: none;
-  border: 0;
-  border-radius: 10px;
-  padding: 0.7rem 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  background: ${p => p.variant === 'ghost' ? 'transparent' : 'linear-gradient(180deg,#00c4ce,#009aa2)'};
-  color: ${p => p.variant === 'ghost' ? '#ddd' : '#0e0e0e'};
-  border: ${p => p.variant === 'ghost' ? '1px solid #4a4a4a' : '0'};
+  appearance: none; border: 0; border-radius: 10px; padding: 0.7rem 1rem; font-weight: 600; cursor: pointer;
+  background: ${p => p.$variant === 'ghost' ? 'transparent' : 'linear-gradient(180deg,#00c4ce,#009aa2)'};
+  color: ${p => p.$variant === 'ghost' ? '#ddd' : '#0e0e0e'};
+  border: ${p => p.$variant === 'ghost' ? '1px solid #4a4a4a' : '0'};
   opacity: ${p => p.disabled ? 0.6 : 1};
 `;
 
-const ErrorMsg = styled.p`
-  color: #ff8d8d;
-  font-size: 0.9rem;
-  margin: 0;
-`;
-
-const Note = styled.p`
-  color: #bdbdbd;
-  font-size: 0.85rem;
-  margin: 0.25rem 0 0;
-`;
+const ErrorMsg = styled.p` color: #ff8d8d; font-size: 0.9rem; margin: 0; `;
+const Note = styled.p` color: #bdbdbd; font-size: 0.85rem; margin: 0.25rem 0 0; `;
 
 function InnerPaymentModal({
   clientSecret,
@@ -78,7 +41,8 @@ function InnerPaymentModal({
   defaultEmail,
   defaultName,
   onClose,
-  onSuccess
+  onSuccess,
+  confirmLabel
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -104,7 +68,6 @@ function InnerPaymentModal({
     const v = validate();
     if (v) { setErr(v); return; }
     if (!stripe || !elements) return;
-
     const card = elements.getElement(CardElement);
     if (!card) { setErr('Card element not ready'); return; }
 
@@ -113,10 +76,7 @@ function InnerPaymentModal({
       const { paymentIntent, error } = await stripe.confirmCardPayment(clientSecret, {
         payment_method: {
           card,
-          billing_details: {
-            name: name.trim(),
-            email: email.trim()
-          }
+          billing_details: { name: name.trim(), email: email.trim() }
         }
       });
 
@@ -141,20 +101,11 @@ function InnerPaymentModal({
         <Row>
           <Field>
             <label>Name on Card</label>
-            <input
-              value={name}
-              onChange={e => setName(e.target.value)}
-              placeholder="Jane Doe"
-            />
+            <input value={name} onChange={e => setName(e.target.value)} placeholder="Jane Doe" />
           </Field>
           <Field>
             <label>Email (receipt)</label>
-            <input
-              type="email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="jane@example.com"
-            />
+            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="jane@example.com" />
           </Field>
         </Row>
 
@@ -177,9 +128,9 @@ function InnerPaymentModal({
         {err && <ErrorMsg>{err}</ErrorMsg>}
 
         <Actions>
-          <Button variant="ghost" onClick={onClose} disabled={processing}>Cancel</Button>
+          <Button $variant="ghost" onClick={onClose} disabled={processing}>Cancel</Button>
           <Button onClick={pay} disabled={processing || !stripe || !elements}>
-            {processing ? 'Processing…' : `Pay ${amountDisplay}`}
+            {processing ? 'Processing…' : (confirmLabel || `Confirm Payment`)}
           </Button>
         </Actions>
       </Form>
@@ -188,15 +139,10 @@ function InnerPaymentModal({
 }
 
 export default function PaymentModal(props) {
-  // Appearance theme matches your dark UI
-  const options = {
-    appearance: { theme: 'night' },
-    clientSecret: props.clientSecret
-  };
-
+  const options = { appearance: { theme: 'night' }, clientSecret: props.clientSecret };
   return (
     <Elements stripe={stripePromise} options={options}>
-      <InnerPaymentModal {...props} />
+      <InnerPaymentModal {...props} confirmLabel={props.confirmLabel} />
     </Elements>
   );
 }

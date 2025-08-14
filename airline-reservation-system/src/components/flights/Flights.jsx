@@ -1,17 +1,17 @@
 // frontend/src/components/Flights.jsx
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // ← NEW
+import { useNavigate } from 'react-router-dom';
 import FlightCard from './FlightCard';
 import FlightSearchForm from '../flights/FlightSearchForm';
 import BookingModal from '../BookingModal';
 import PaymentModal from '../PaymentModal';
 import api from '../../api/api';
 
-const AUTH_TOKEN_KEY = 'authToken';               // ← adjust if your key name differs
-const PENDING_BOOKING_KEY = 'pending_booking';    // sessionStorage key
+const AUTH_TOKEN_KEY = 'authToken';
+const PENDING_BOOKING_KEY = 'pending_booking';
 
 export default function FlightsList({ flights: flightsProp }) {
-  const navigate = useNavigate(); // ← NEW
+  const navigate = useNavigate();
 
   const [flights, setFlights] = useState(Array.isArray(flightsProp) ? flightsProp : []);
   const [filteredFlights, setFilteredFlights] = useState(Array.isArray(flightsProp) ? flightsProp : []);
@@ -26,9 +26,9 @@ export default function FlightsList({ flights: flightsProp }) {
   const [bookingPayload, setBookingPayload] = useState(null);
   const [paymentData, setPaymentData] = useState(null); // { clientSecret, paymentIntentId, amountCents }
 
-  const isLoggedIn = () => !!localStorage.getItem(AUTH_TOKEN_KEY); // ← simple auth check
+  const isLoggedIn = () => !!localStorage.getItem(AUTH_TOKEN_KEY);
 
-  // Fetch flights (and keep filtered list in sync)
+  // Fetch flights
   useEffect(() => {
     if (flightsProp) {
       setFilteredFlights(flightsProp);
@@ -51,7 +51,7 @@ export default function FlightsList({ flights: flightsProp }) {
     })();
   }, [flightsProp]);
 
-  // If we redirected to login earlier, resume the booking when we return
+  // Resume booking after login
   useEffect(() => {
     if (loading) return;
     const raw = sessionStorage.getItem(PENDING_BOOKING_KEY);
@@ -61,7 +61,7 @@ export default function FlightsList({ flights: flightsProp }) {
       const f = flights.find(x => String(x.id) === String(flightId));
       if (f) setActiveFlight(f);
     } catch (_) {
-      /* ignore parse errors */
+      // ignore
     } finally {
       sessionStorage.removeItem(PENDING_BOOKING_KEY);
     }
@@ -82,12 +82,11 @@ export default function FlightsList({ flights: flightsProp }) {
     setFilteredFlights(filtered);
   };
 
-  // When user clicks "Book"
+  // Book click → login gate → open BookingModal
   const handleBookClick = (flight) => {
     if (!isLoggedIn()) {
-      // remember where we were and what we tried to book
       sessionStorage.setItem(PENDING_BOOKING_KEY, JSON.stringify({ flightId: flight.id }));
-      navigate('/login', { state: { from: '/flights' } }); // router will bring them back
+      navigate('/login', { state: { from: '/flights' } });
       return;
     }
     setActiveFlight(flight);
@@ -101,10 +100,19 @@ export default function FlightsList({ flights: flightsProp }) {
       setSubmitting(true);
       setBookingPayload(payload);
 
-      const amountCents = Math.round(Number(payload.totalPrice) * 100);
+      // "$1,299.50" -> 129950 cents
+      const priceStr = String(payload.totalPrice ?? '')
+        .replace(/,/g, '')
+        .replace(/[^0-9.]/g, '');
+      const amountCents = Math.round(parseFloat(priceStr) * 100);
+
+      if (!Number.isFinite(amountCents) || amountCents < 50) {
+        setError('Invalid total. Please check passengers and try again.');
+        return;
+      }
 
       const res = await api.post('/payments/create-intent', {
-        amount: amountCents,
+        amountCents,                 // ← send integer cents
         currency: 'usd',
         metadata: {
           flightId: payload.flightId,
@@ -113,16 +121,18 @@ export default function FlightsList({ flights: flightsProp }) {
         }
       });
 
+      if (!res.data?.clientSecret) throw new Error('Missing clientSecret');
+
       setPaymentData({
         clientSecret: res.data.clientSecret,
         paymentIntentId: res.data.paymentIntentId,
         amountCents
       });
 
-      closeBooking(); // close BookingModal, then PaymentModal opens
+      closeBooking(); // close BookingModal → PaymentModal opens
     } catch (e) {
-      console.error(e);
-      setError('Unable to start payment. Please try again.');
+      console.error('create-intent failed:', e?.response?.data || e.message);
+      setError(e?.response?.data?.error || e.message || 'Unable to start payment. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -136,10 +146,10 @@ export default function FlightsList({ flights: flightsProp }) {
         paymentIntentId: paymentIntent.id,
         status: 'confirmed'
       });
-      // Optional: toast success, refresh flight seats, etc.
+      // Optionally show toast & refresh seats
     } catch (e) {
       console.error(e);
-      // Even if this fails, payment is captured; handle gracefully
+      // Payment captured; handle finalize error gracefully
     } finally {
       setPaymentData(null);
       setBookingPayload(null);
@@ -170,7 +180,7 @@ export default function FlightsList({ flights: flightsProp }) {
         <BookingModal
           flight={activeFlight}
           onClose={closeBooking}
-          onConfirm={confirmBooking}  // → creates PaymentIntent, then opens PaymentModal
+          onConfirm={confirmBooking}   // → creates PaymentIntent, then opens PaymentModal
           submitting={submitting}
         />
       )}
@@ -182,7 +192,9 @@ export default function FlightsList({ flights: flightsProp }) {
           defaultEmail={bookingPayload?.email}
           defaultName={`${bookingPayload?.firstName || ''} ${bookingPayload?.lastName || ''}`.trim()}
           onClose={() => setPaymentData(null)}
-          onSuccess={handlePaymentSuccess}     // → finalize booking
+          onSuccess={handlePaymentSuccess}
+          // Nice UX label on the button:
+          confirmLabel={`Confirm Payment — $${(paymentData.amountCents / 100).toFixed(2)}`}
         />
       )}
     </>

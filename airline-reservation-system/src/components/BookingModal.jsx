@@ -1,4 +1,3 @@
-// frontend/src/components/BookingModal.jsx
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
 import Modal from './Modal';
@@ -22,12 +21,13 @@ const Actions = styled.div`
   display: flex; gap: 0.75rem; justify-content: flex-end; margin-top: 0.5rem;
 `;
 
+// NOTE: use transient prop "$variant" so it isn't forwarded to the DOM
 const Button = styled.button`
   appearance: none; border: 0; border-radius: 10px;
   padding: 0.7rem 1rem; font-weight: 600; cursor: pointer;
-  background: ${p => p.variant === 'ghost' ? 'transparent' : 'linear-gradient(180deg,#00c4ce,#009aa2)'};
-  color: ${p => p.variant === 'ghost' ? '#ddd' : '#0e0e0e'};
-  border: ${p => p.variant === 'ghost' ? '1px solid #4a4a4a' : '0'};
+  background: ${p => p.$variant === 'ghost' ? 'transparent' : 'linear-gradient(180deg,#00c4ce,#009aa2)'};
+  color: ${p => p.$variant === 'ghost' ? '#ddd' : '#0e0e0e'};
+  border: ${p => p.$variant === 'ghost' ? '1px solid #4a4a4a' : '0'};
   opacity: ${p => p.disabled ? 0.6 : 1};
 `;
 
@@ -69,7 +69,7 @@ export default function BookingModal({ flight, onClose, onConfirm, submitting })
 
   const submit = async () => {
     if (!validate()) return;
-    // Call parent with minimal payload (let the parent hit API /bookings)
+    // Call parent; parent will create PaymentIntent and open PaymentModal
     onConfirm?.({
       flightId: flight.id,
       firstName: form.firstName.trim(),
@@ -159,9 +159,9 @@ export default function BookingModal({ flight, onClose, onConfirm, submitting })
       </Field>
 
       <Actions>
-        <Button variant="ghost" onClick={onClose} disabled={submitting}>Cancel</Button>
+        <Button $variant="ghost" onClick={onClose} disabled={submitting}>Cancel</Button>
         <Button onClick={submit} disabled={submitting || seatsAvailable < 1}>
-          {submitting ? 'Booking…' : 'Confirm Booking'}
+          {submitting ? 'Preparing…' : 'Pay & Continue'}
         </Button>
       </Actions>
     </Modal>

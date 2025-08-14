@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate, Link, useLocation } from 'react-router-dom'; // ← added useLocation
+import { useNavigate, Link } from 'react-router-dom'; // ← added useLocation
 import api from '../../api/api'; 
+
+const AUTH_TOKEN_KEY = 'authToken'; // keep in sync with App
 
 const LoginContainer = styled.div`
   background-color: #1e1e1e;
@@ -86,14 +88,11 @@ const StyledLink = styled(Link)`
   }
 `;
 
-const AUTH_TOKEN_KEY = 'authToken'; // ← match Flights.jsx
-
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // ← read where we came from
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -103,17 +102,16 @@ const Login = () => {
       const token = res.data?.token;
       if (!token) throw new Error('Missing token from server');
 
-      // store token using the same key Flights.jsx checks
+      // Store under a single, consistent key
       localStorage.setItem(AUTH_TOKEN_KEY, token);
-      // (optional) keep your old key too if other parts depend on it:
-      // localStorage.setItem('token', token);
+      // (optional) keep legacy key too if other code still uses it
+      localStorage.setItem('token', token);
 
-      // attach token to API for subsequent requests
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      // Attach to axios for future calls (adjust if your backend expects Bearer)
+      api.defaults.headers.common.Authorization = `${token}`;
 
-      // go back to where the user started (defaults to /flights)
-      const from = location.state?.from || '/flights';
-      navigate(from, { replace: true });
+      // ALWAYS send to dashboard
+      navigate('/dashboard', { replace: true });
     } catch (err) {
       console.error('Login failed:', err.response?.data || err.message);
       alert('Login failed: ' + (err.response?.data?.error || 'Unexpected error'));
@@ -127,32 +125,17 @@ const Login = () => {
       <LoginBox>
         <LoginHeading>Login</LoginHeading>
         <form onSubmit={handleLogin}>
-          <Input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-          <Input
-            type="password"
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
+          <Input type="email" placeholder="Email" value={email}
+                 onChange={(e) => setEmail(e.target.value)} required />
+          <Input type="password" placeholder="Password" value={password}
+                 onChange={(e) => setPassword(e.target.value)} required />
           <SubmitButton type="submit" disabled={submitting}>
             {submitting ? 'Signing In…' : 'Sign In'}
           </SubmitButton>
         </form>
         <AuthLinks>
-          <AuthText>
-            Don’t have an account?
-            <StyledLink to="/register">Sign up</StyledLink>
-          </AuthText>
-          <AuthText>
-            <StyledLink to="/email-request">Forgot Password?</StyledLink>
-          </AuthText>
+          <AuthText>Don’t have an account? <StyledLink to="/register">Sign up</StyledLink></AuthText>
+          <AuthText><StyledLink to="/email-request">Forgot Password?</StyledLink></AuthText>
         </AuthLinks>
       </LoginBox>
     </LoginContainer>
@@ -160,4 +143,3 @@ const Login = () => {
 };
 
 export default Login;
-
