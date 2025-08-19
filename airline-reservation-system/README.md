@@ -35,12 +35,14 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 - Login and Registration pages with form validation
 - Styled-components-based theming
 - Mobile-responsive layout
-
-### In Progress:
 - Redux store setup for authentication and user data
 - Flight search and booking functionality
 - Dashboard page with real-time booking data
 - Backend API integration with secure JWT authentication
+- Payment with stripe
+
+### In Progress:
+- Dual user auth with Agent Dashboard for booking cancellation func
 
 ---
 
