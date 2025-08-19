@@ -42,7 +42,7 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 - Payment with stripe
 
 ### In Progress:
-- Dual user auth with Agent Dashboard for booking cancellation func
+- Dual user auth with Agent Dashboard for booking cancellation funcitonality
 
 ---
 
