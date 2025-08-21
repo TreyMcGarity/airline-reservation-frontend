@@ -3,12 +3,12 @@ import { HashRouter as Router, Routes, Route, Link, Navigate } from 'react-route
 import styled from 'styled-components';
 import SplashPage from './pages/SplashPage';
 import Home from './pages/Home';
-import Flights from './components/flights/Flights';
+import Flights from './pages/Flights';
 import AddFlight from './components/flights/AddFlight';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import CustomerDashboard from './components/CustomerDashboard';
-import AgentDashboard from './components/AgentDashboard';
+import CustomerDashboard from './pages/CustomerDashboard';
+import AgentDashboard from './pages/AgentDashboard';
 import RequireRole from './components/auth/RequireRole';
 import api from './api/api';
 import Logo from './utils/airline-res-logo.png';

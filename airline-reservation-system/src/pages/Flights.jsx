@@ -1,11 +1,11 @@
 // frontend/src/components/Flights.jsx
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import FlightCard from './FlightCard';
-import FlightSearchForm from '../flights/FlightSearchForm';
-import BookingModal from '../BookingModal';
-import PaymentModal from '../PaymentModal';
-import api from '../../api/api';
+import FlightCard from '../components/flights/FlightCard';
+import FlightSearchForm from '../components/flights/FlightSearchForm';
+import BookingModal from '../components/booking/BookingModal';
+import PaymentModal from '../components/payment/PaymentModal';
+import api from '../api/api';
 
 const AUTH_TOKEN_KEY = 'authToken';
 const PENDING_BOOKING_KEY = 'pending_booking';

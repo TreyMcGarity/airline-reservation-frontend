@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import Modal from './Modal';
+import Modal from '../Modal';
 
 const Row = styled.div`
   display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;

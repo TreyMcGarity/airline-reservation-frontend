@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import BookingCard from './BookingCard';
+import BookingCard from '../components/booking/BookingCard';
 import api from '../api/api';
 
 const DashboardContainer = styled.div`

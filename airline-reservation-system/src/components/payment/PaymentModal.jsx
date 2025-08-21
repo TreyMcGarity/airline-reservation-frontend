@@ -1,8 +1,8 @@
 import React, { useMemo, useState } from 'react';
 import styled from 'styled-components';
-import Modal from './Modal';
+import Modal from '../Modal';
 import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
-import { stripePromise } from '../stripe/stripe';
+import { stripePromise } from '../../stripe/stripe';
 
 const Form = styled.div` display: grid; gap: 0.9rem; `;
 const Row = styled.div`
