@@ -47,7 +47,7 @@ const formatDateTime = (isoString) => {
 const BookingCard = ({ booking }) => {
   return (
     <Card>
-      <FlightTitle>{booking.flight_name || 'Flight'}</FlightTitle>
+      <FlightTitle>{booking.airline || 'Flight'}</FlightTitle>
       <InfoRow><Label>Departure:</Label> {formatDateTime(booking.departure_time)}</InfoRow>
       <InfoRow><Label>Arrival:</Label> {booking.arrival_time} </InfoRow>
       <InfoRow><Label>Seat:</Label> {booking.seat_number || 'N/A'}</InfoRow>
