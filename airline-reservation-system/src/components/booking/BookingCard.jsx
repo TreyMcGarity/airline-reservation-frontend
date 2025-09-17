@@ -51,6 +51,7 @@ const BookingCard = ({ booking }) => {
       <InfoRow><Label>Departure:</Label> {formatDateTime(booking.departure_time)}</InfoRow>
       <InfoRow><Label>Arrival:</Label> {booking.arrival_time} </InfoRow>
       <InfoRow><Label>Seat:</Label> {booking.seat_number || 'N/A'}</InfoRow>
+      <p>other things plus a cancellation button</p>
     </Card>
   );
 };
