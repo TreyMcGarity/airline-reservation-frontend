@@ -1,15 +1,16 @@
 {
   "files": {
     "main.css": "/airline-reservation-system/static/css/main.e6c13ad2.css",
-    "main.js": "/airline-reservation-system/static/js/main.3e2019e1.js",
+    "main.js": "/airline-reservation-system/static/js/main.516b84b7.js",
     "static/js/453.f5dbc5e7.chunk.js": "/airline-reservation-system/static/js/453.f5dbc5e7.chunk.js",
+    "static/media/airline-res-logo.png": "/airline-reservation-system/static/media/airline-res-logo.ff276f250cfa600e8865.png",
     "index.html": "/airline-reservation-system/index.html",
     "main.e6c13ad2.css.map": "/airline-reservation-system/static/css/main.e6c13ad2.css.map",
-    "main.3e2019e1.js.map": "/airline-reservation-system/static/js/main.3e2019e1.js.map",
+    "main.516b84b7.js.map": "/airline-reservation-system/static/js/main.516b84b7.js.map",
     "453.f5dbc5e7.chunk.js.map": "/airline-reservation-system/static/js/453.f5dbc5e7.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.3e2019e1.js"
+    "static/js/main.516b84b7.js"
   ]
 }
