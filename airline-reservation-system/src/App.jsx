@@ -44,7 +44,7 @@ const App = () => {
   }, [token]);
 
   return (
-    <HashRouter>
+    <Router>
       <Nav>
         <LogoContainer><LogoImage src={Logo} alt="Logo" /></LogoContainer>
         <NavLinks>
@@ -93,7 +93,7 @@ const App = () => {
 
         <Route path="/support" element={<div>Support Page Coming Soon</div>} />
       </Routes>
-    </HashRouter>
+    </Router>
   );
 };
 
