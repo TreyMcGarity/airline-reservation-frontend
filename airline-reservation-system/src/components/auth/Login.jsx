@@ -77,7 +77,7 @@ const Login = () => {
 
       saveAuth({ token, role: roleFromServer });
       localStorage.setItem(AUTH_TOKEN_KEY, token); // keep legacy in sync
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      api.defaults.headers.common.Authorization = `${token}`;
 
       navigate(roleFromServer === 'agent' ? '/agent/dashboard' : '/dashboard', { replace: true });
     } catch (err) {

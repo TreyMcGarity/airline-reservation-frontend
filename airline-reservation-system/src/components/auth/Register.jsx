@@ -76,7 +76,7 @@ const Registration = () => {
       if (!token) throw new Error('Missing token from server');
 
       saveAuth({ token, role: roleFromServer });
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      api.defaults.headers.common.Authorization = `${token}`;
 
       navigate(roleFromServer === 'agent' ? '/agent/dashboard' : '/dashboard', { replace: true });
     } catch (err) {

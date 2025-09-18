@@ -37,7 +37,7 @@ const App = () => {
 
   useEffect(() => {
     if (token) {
-      api.defaults.headers.common.Authorization = `Bearer ${token}`;
+      api.defaults.headers.common.Authorization = `${token}`;
     } else {
       delete api.defaults.headers.common.Authorization;
     }
