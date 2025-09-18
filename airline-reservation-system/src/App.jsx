@@ -44,7 +44,7 @@ const App = () => {
   }, [token]);
 
   return (
-    <Router>
+    <Router basename="/airline-reservation-frontend"> 
       <Nav>
         <LogoContainer><LogoImage src={Logo} alt="Logo" /></LogoContainer>
         <NavLinks>
