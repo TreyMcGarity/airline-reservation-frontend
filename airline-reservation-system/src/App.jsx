@@ -2,6 +2,7 @@ import React, { useMemo, useEffect } from 'react';
 import { HashRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import SplashPage from './pages/SplashPage';
+import Support from './pages/SupportPage';
 import Home from './pages/Home';
 import Flights from './pages/Flights';
 import AddFlight from './components/flights/AddFlight';
@@ -44,7 +45,7 @@ const App = () => {
   }, [token]);
 
   return (
-    <Router basename="/airline-reservation-frontend"> 
+    <Router> 
       <Nav>
         <LogoContainer><LogoImage src={Logo} alt="Logo" /></LogoContainer>
         <NavLinks>
@@ -91,7 +92,7 @@ const App = () => {
           }
         />
 
-        <Route path="/support" element={<div>Support Page Coming Soon</div>} />
+        <Route path="/support" element={<Support />} />
       </Routes>
     </Router>
   );
