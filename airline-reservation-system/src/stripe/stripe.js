@@ -1,19 +1,22 @@
 // src/stripe/stripe.js
 import { loadStripe } from '@stripe/stripe-js';
 
-// Pull from Vite OR CRA
+// Pull from environment. Avoid direct `import.meta` usage because
+// that syntax can cause a runtime SyntaxError when served as a
+// non-module script (CRA builds/dev server). Prefer CRA env var,
+// then a global injected value if your deploy sets one.
 const getPublishableKey = () => {
-  const viteKey =
-    typeof import.meta !== 'undefined' &&
-    import.meta.env &&
-    import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-
+  // CRA / react-scripts
   const craKey =
     typeof process !== 'undefined' &&
     process.env &&
     process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY;
 
-  return viteKey || craKey || null;
+  // Some deployments (or Vite builds) may inject a global at runtime.
+  // Check `window.__VITE_STRIPE_PUBLISHABLE_KEY` as a safe fallback.
+  const globalKey = typeof window !== 'undefined' && window.__VITE_STRIPE_PUBLISHABLE_KEY;
+
+  return craKey || globalKey || null;
 };
 
 const pk = getPublishableKey();
