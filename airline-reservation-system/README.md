@@ -21,8 +21,8 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 ### Frontend:
 - React – Component-based UI library
 - Styled Components – Modular and scoped styling
-- React Router – For navigation and routing
-- Redux (coming soon) – For global state management
+- HashRouter – For navigation and routing
+- Redux state management
 
 ### Backend:
 - Integration with a Node.js + Express API and PostgreSQL database
@@ -32,7 +32,7 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 ## Features
 
 ### Implemented:
-- Login and Registration pages with form validation
+- Login and Registration pages with form validation and multi-user ability
 - Styled-components-based theming
 - Mobile-responsive layout
 - Redux store setup for authentication and user data
@@ -42,7 +42,8 @@ The frontend is designed with a dark theme and minimalistic UI for clarity and e
 - Payment with stripe
 
 ### In Progress:
-- Dual user auth with Agent Dashboard for booking cancellation funcitonality
+- Agent Dashboard (full functionality will include booking cancellation funcitonality)
+- Redux additional management
 
 ---
 
